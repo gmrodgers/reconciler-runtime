@@ -23,6 +23,7 @@ type ObjectMeta interface {
 	GenerateName(format string, a ...interface{}) ObjectMeta
 	AddLabel(key, value string) ObjectMeta
 	AddAnnotation(key, value string) ObjectMeta
+	Finalizers(finalizers []string) ObjectMeta
 	Generation(generation int64) ObjectMeta
 	ControlledBy(owner testing.Factory, scheme *runtime.Scheme) ObjectMeta
 	Created(sec int64) ObjectMeta
@@ -82,6 +83,12 @@ func (f *objectMetaImpl) AddAnnotation(key, value string) ObjectMeta {
 			om.Annotations = map[string]string{}
 		}
 		om.Annotations[key] = value
+	})
+}
+
+func (f *objectMetaImpl) Finalizers(finalizers []string) ObjectMeta {
+	return f.mutate(func(om *metav1.ObjectMeta) {
+		om.Finalizers = finalizers
 	})
 }
 

@@ -136,10 +136,6 @@ func (r *ParentReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctr
 }
 
 func (r *ParentReconciler) reconcile(ctx context.Context, parent client.Object) (ctrl.Result, error) {
-	if parent.GetDeletionTimestamp() != nil {
-		return ctrl.Result{}, nil
-	}
-
 	result, err := r.Reconciler.Reconcile(ctx, parent)
 	if err != nil {
 		return ctrl.Result{}, err
